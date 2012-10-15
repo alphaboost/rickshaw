@@ -8,6 +8,7 @@ Rickshaw.Graph.Axis.Time = function(args) {
 	this.elements = [];
 	this.ticksTreatment = args.ticksTreatment || 'plain';
 	this.fixedTimeUnit = args.timeUnit;
+	this.tzOffset = args.tzOffset;
 
 	var time = new Rickshaw.Fixtures.Time();
 
@@ -35,7 +36,7 @@ Rickshaw.Graph.Axis.Time = function(args) {
 		var unit = this.fixedTimeUnit || this.appropriateTimeUnit();
 		var count = Math.ceil((domain[1] - domain[0]) / unit.seconds);
 
-		var runningTick = domain[0];
+		var runningTick = domain[0] + (this.tzOffset * -1 * unit.seconds);
 
 		var offsets = [];
 
