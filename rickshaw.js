@@ -1196,6 +1196,8 @@ Rickshaw.Graph.Axis.Time = function(args) {
 		for (var i = 0; i < count; i++) {
 
 			var tzOffset = this.tzOffset * -1 * unit.seconds;
+			console.debug(tzOffset);
+			
 			var tickValue = time.ceil((runningTick + tzOffset), unit);
 			runningTick = tickValue + unit.seconds / 2;
 
