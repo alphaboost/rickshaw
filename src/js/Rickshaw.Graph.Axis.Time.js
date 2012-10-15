@@ -8,7 +8,7 @@ Rickshaw.Graph.Axis.Time = function(args) {
 	this.elements = [];
 	this.ticksTreatment = args.ticksTreatment || 'plain';
 	this.fixedTimeUnit = args.timeUnit;
-	this.tzOffset = args.tzOffset;
+	this.tzOffset = args.tzOffset || 0;
 
 	var time = new Rickshaw.Fixtures.Time();
 
@@ -42,7 +42,8 @@ Rickshaw.Graph.Axis.Time = function(args) {
 
 		for (var i = 0; i < count; i++) {
 
-			var tickValue = time.ceil(runningTick, unit);
+			var tzOffset = this.tzOffset * -1 * unit.seconds;
+			var tickValue = time.ceil((runningTick + tzOffset), unit);
 			runningTick = tickValue + unit.seconds / 2;
 
 			offsets.push( { value: tickValue, unit: unit } );
@@ -66,8 +67,7 @@ Rickshaw.Graph.Axis.Time = function(args) {
 			if (self.graph.x(o.value) > self.graph.x.range()[1]) return;
 	
 			var element = document.createElement('div');
-			var tzOffset = this.tzOffset * -1 * o.unit.seconds;
-			element.style.left = self.graph.x(o.value + tzOffset) + 'px';
+			element.style.left = self.graph.x(o.value) + 'px';
 			element.classList.add('x_tick');
 			element.classList.add(self.ticksTreatment);
 
