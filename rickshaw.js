@@ -1188,20 +1188,15 @@ Rickshaw.Graph.Axis.Time = function(args) {
 
 		var unit = this.fixedTimeUnit || this.appropriateTimeUnit();
 		var count = Math.ceil((domain[1] - domain[0]) / unit.seconds);
-
-		var runningTick = domain[0];
-
+    var runningTick = domain[0] + this.tzOffset;
+    
 		var offsets = [];
 
 		for (var i = 0; i < count; i++) {
-
-			var tzOffset = this.tzOffset * -1 * 3600;
-			console.debug(tzOffset);
-			
-			var tickValue = time.ceil((runningTick + tzOffset), unit);
+      var tickValue = time.ceil(runningTick + 1, unit)
 			runningTick = tickValue + unit.seconds / 2;
-
-			offsets.push( { value: tickValue, unit: unit } );
+      
+      offsets.push( { value: tickValue - this.tzOffset, unit: unit } );
 		}
 
 		return offsets;
@@ -1218,7 +1213,6 @@ Rickshaw.Graph.Axis.Time = function(args) {
 		var offsets = this.tickOffsets();
 
 		offsets.forEach( function(o) {
-			
 			if (self.graph.x(o.value) > self.graph.x.range()[1]) return;
 	
 			var element = document.createElement('div');
